@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人體運輸大作戰｜全員集合！</title>
+<style>
+:root{--ink:#26344a;--muted:#68758a;--pink:#ff6b83;--red:#e94f68;--blue:#5b9ee8;--green:#39ad86;--gold:#f2b84b;--purple:#9575cd;--paper:#fff;--bg:#f4f7fc}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink);background:linear-gradient(135deg,#fff1f3,#edf5ff 55%,#f4fff9);min-height:100vh}
+header{padding:28px 18px 22px;text-align:center;background:linear-gradient(120deg,#ff788d,#ffad86);color:white;border-radius:0 0 30px 30px;box-shadow:0 8px 22px #d96b7440}
+header h1{margin:0;font-size:clamp(27px,5vw,42px);letter-spacing:2px}header p{margin:9px 0 0;font-weight:600}
+.wrap{max-width:1050px;margin:22px auto;padding:0 16px 40px}.topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+.scorebox{background:white;border:1px solid #e6eaf2;border-radius:15px;padding:10px 16px;font-weight:800;box-shadow:0 4px 12px #24334a0b}.scorebox span{color:var(--red);font-size:21px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{border:0;background:#fff;color:var(--ink);padding:11px 16px;border-radius:999px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px #26344a12}.tab.active{background:var(--ink);color:#fff}
+.panel{display:none;background:#fff;border:1px solid #e7ebf3;border-radius:22px;padding:22px;box-shadow:0 10px 28px #24334a0c}.panel.active{display:block}
+h2{margin:0 0 8px;font-size:25px}.lead{color:var(--muted);margin:0 0 18px;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:13px}
+.role{border:2px solid #edf0f5;border-radius:18px;padding:15px;background:#fff;display:flex;gap:12px;align-items:flex-start;transition:.2s}
+.role:hover{transform:translateY(-3px);box-shadow:0 8px 18px #26344a12}.emoji{font-size:37px;line-height:1.2}.role h3{margin:0 0 5px;font-size:17px}.role p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.tag{display:inline-block;font-size:12px;font-weight:800;padding:4px 8px;border-radius:99px;background:#f0f4fa;margin-top:8px}
+.question{padding:15px 0;border-bottom:1px solid #edf0f5}.question:last-child{border:0}.question strong{display:block;margin-bottom:10px}
+.options{display:flex;flex-wrap:wrap;gap:8px}.choice{border:1.5px solid #dce3ed;background:#fff;border-radius:12px;padding:9px 13px;cursor:pointer;font-weight:700;color:var(--ink)}.choice:hover{border-color:var(--blue);background:#f3f8ff}.choice.selected{background:#eaf3ff;border-color:var(--blue);color:#245c9a}.choice:disabled{cursor:default;opacity:.8}
+.feedback{font-size:14px;font-weight:700;margin-top:8px}.correct{color:#21865f}.wrong{color:#d64c61}
+button.primary,button.secondary{border:0;border-radius:13px;padding:12px 18px;font-size:15px;font-weight:800;cursor:pointer;margin-top:16px}
+.primary{background:var(--red);color:#fff;box-shadow:0 5px 12px #e94f6830}.secondary{background:#edf2f8;color:var(--ink);margin-left:8px}.primary:disabled{opacity:.45;cursor:not-allowed}
+.notice{margin-top:14px;padding:13px 15px;border-radius:13px;background:#f5f8fc;color:#4c5a70;line-height:1.65}
+.crisis{border:1px solid #e8edf4;border-radius:18px;padding:17px;margin:13px 0;background:#fff}.crisis h3{margin:0 0 7px}.crisis p{margin:5px 0;color:var(--muted);line-height:1.6}
+.steps{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.step{background:#f0f4fa;border-radius:10px;padding:8px 10px;font-size:13px;font-weight:800}.step::after{content:" →";color:#9aa6b8}.step:last-child::after{content:""}
+select{padding:10px;border:1px solid #dce3ed;border-radius:10px;font:inherit;max-width:100%}
+.result{font-size:20px;font-weight:900;margin-top:15px}
+footer{text-align:center;color:#8490a2;font-size:12px;margin-top:20px}
+@media(max-width:600px){.panel{padding:16px}.topbar{align-items:flex-start}.tabs{width:100%}.tab{flex:1;padding:10px 8px;font-size:13px}.role{padding:12px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🫀 人體運輸大作戰</h1>
+  <p>全員集合！組成最強人體救援隊</p>
+</header>
+<div class="wrap">
+  <div class="topbar">
+    <div class="scorebox">🏆 團隊積分：<span id="score">0</span></div>
+    <div class="scorebox">⭐ 完成關卡：<span id="completed">0</span> / 3</div>
+  </div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="team">① 認識隊員</button>
+    <button class="tab" data-tab="match">② 角色配對</button>
+    <button class="tab" data-tab="mission">③ 危機任務</button>
+  </nav>
+
+  <section class="panel active" id="team">
+    <h2>第一關：召集人體隊員</h2>
+    <p class="lead">點開每位隊員的角色卡，認識人體運輸與防禦系統的分工！</p>
+    <div class="grid" id="roleGrid"></div>
+    <div class="notice">💡 小提醒：心臟負責推動血液；血管是血液流動的通道；血液中的不同成分則負責運輸、防禦與止血。</div>
+  </section>
+
+  <section class="panel" id="match">
+    <h2>第二關：角色大配對</h2>
+    <p class="lead">每個任務都需要找到最適合的角色。全部完成後按下「檢查答案」！</p>
+    <div id="quiz"></div>
+    <button class="primary" id="checkQuiz">檢查答案</button>
+    <button class="secondary" id="resetQuiz">重新挑戰</button>
+    <div id="quizResult" class="result" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" id="mission">
+    <h2>第三關：人體合作大危機</h2>
+    <p class="lead">人體同時發生了三場危機！請派出正確的角色合作完成任務。</p>
+    <div id="missions"></div>
+    <div class="notice">💡 提示：真正的血液循環是連續的。血液經肺部取得氧氣，再由心臟送往全身；完成物質交換後，再回到心臟。</div>
+    <div id="missionResult" class="result" aria-live="polite"></div>
+  </section>
+  <footer>國中自然科學互動學習｜人體運輸與防禦系統</footer>
+</div>
+<script>
+const roles=[
+ {e:"🫀",n:"心臟",t:"人體幫浦",d:"藉由規律收縮與舒張，推動血液在血管中流動。"},
+ {e:"🫁",n:"肺臟",t:"氧氣補給站",d:"在肺部進行氣體交換：血液獲得氧氣，並將二氧化碳排出。"},
+ {e:"🛣️",n:"動脈",t:"出發道路",d:"將血液從心臟送往身體各處。"},
+ {e:"🛤️",n:"靜脈",t:"返家道路",d:"將血液從身體各處送回心臟。"},
+ {e:"🔄",n:"微血管",t:"物資交換站",d:"管壁很薄，讓血液與組織細胞交換氧氣、養分及代謝廢物。"},
+ {e:"🔴",n:"紅血球",t:"氧氣快遞員",d:"紅血球中的血紅素能和氧氣結合，協助運送氧氣。"},
+ {e:"⚪",n:"白血球",t:"防禦戰士",d:"參與人體防禦，能辨識並對抗入侵的病原體。"},
+ {e:"🟡",n:"血小板",t:"修補工程師",d:"參與血液凝固，幫助受傷的血管止血。"},
+ {e:"💧",n:"血漿",t:"物資運輸車",d:"血液中的液體成分，能運送養分、部分代謝廢物等物質。"}
+];
+document.getElementById("roleGrid").innerHTML=roles.map((r,i)=>`<article class="role"><div class="emoji">${r.e}</div><div><h3>${r.n}</h3><p>${r.d}</p><span class="tag">${r.t}</span></div></article>`).join("");
+let score=0,completed=new Set();
+function addPoints(key,pts){if(!completed.has(key)){completed.add(key);score+=pts;document.getElementById("score").textContent=score;document.getElementById("completed").textContent=completed.size;}}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById(b.dataset.tab).classList.add("active")}));
+const questions=[
+ ["負責推動血液循環","心臟",["心臟","肺臟","動脈","微血管"]],
+ ["讓血液獲得氧氣、排出二氧化碳","肺臟",["靜脈","肺臟","紅血球","血小板"]],
+ ["將血液從心臟送出去","動脈",["靜脈","動脈","微血管","血漿"]],
+ ["將血液從身體各處送回心臟","靜脈",["動脈","心臟","靜脈","肺臟"]],
+ ["負責與組織細胞交換物質","微血管",["微血管","白血球","心臟","血小板"]],
+ ["負責協助運送氧氣","紅血球",["血漿","紅血球","白血球","血小板"]],
+ ["負責對抗病原體","白血球",["紅血球","血小板","白血球","血漿"]],
+ ["參與血液凝固、幫助止血","血小板",["血漿","白血球","紅血球","血小板"]],
+ ["運送養分與部分代謝廢物","血漿",["血漿","肺臟","動脈","紅血球"]]
+];
+let answers={};
+function renderQuiz(){
+ answers={};document.getElementById("quizResult").textContent="";
+ document.getElementById("quiz").innerHTML=questions.map((q,i)=>`<div class="question" data-q="${i}"><strong>任務 ${i+1}：${q[0]}</strong><div class="options">${q[2].map(o=>`<button class="choice" data-answer="${o}">${o}</button>`).join("")}</div><div class="feedback"></div></div>`).join("");
+ document.querySelectorAll("#quiz .question").forEach(card=>card.querySelectorAll(".choice").forEach(btn=>btn.addEventListener("click",()=>{card.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");answers[card.dataset.q]=btn.dataset.answer;})));
+}
+renderQuiz();
+document.getElementById("checkQuiz").addEventListener("click",()=>{
+ if(Object.keys(answers).length!==questions.length){document.getElementById("quizResult").textContent="還有任務沒有配對完成喔！";return;}
+ let n=0;questions.forEach((q,i)=>{const card=document.querySelector(`[data-q="${i}"]`),f=card.querySelector(".feedback");if(answers[i]===q[1]){n++;f.className="feedback correct";f.textContent="✓ 配對成功！";}else{f.className="feedback wrong";f.textContent="✗ 正確角色是："+q[1];}});
+ document.getElementById("quizResult").textContent=`🎉 你答對 ${n} / ${questions.length} 題！獲得 ${n*10} 分`;
+ if(n===questions.length)addPoints("quiz",n*10);
+ else if(!completed.has("quiz")){score+=n*10;document.getElementById("score").textContent=score;}
+});
+document.getElementById("resetQuiz").addEventListener("click",()=>{renderQuiz();});
+const missions=[
+ {title:"🚨 危機一：人體缺氧了！",desc:"肺部取得的氧氣，要送到全身細胞。請選出這趟任務需要的角色。",choices:["心臟","肺臟","紅血球","動脈","微血管","白血球"],correct:["心臟","肺臟","紅血球","動脈","微血管"],why:"肺部讓血液取得氧氣；心臟推動血液，紅血球運送氧氣，動脈和微血管協助血液抵達並交換物質。"},
+ {title:"🦠 危機二：細菌入侵！",desc:"病原體進入人體，身體需要啟動防禦。哪些角色能參與這場任務？",choices:["白血球","心臟","血小板","皮膚與黏膜","紅血球"],correct:["白血球","心臟","皮膚與黏膜"],why:"皮膚與黏膜是第一道防線；白血球參與防禦。血液循環也協助免疫細胞在身體中移動。"},
+ {title:"🩹 危機三：血管受傷了！",desc:"血管破損、血液流出，需要啟動止血任務。哪些角色會參與？",choices:["血小板","血漿","紅血球","肺臟","動脈"],correct:["血小板","血漿"],why:"血小板會聚集並參與凝血；血漿中含有凝血相關物質，兩者合作幫助止血。"}
+];
+const selected={};
+document.getElementById("missions").innerHTML=missions.map((m,i)=>`<div class="crisis"><h3>${m.title}</h3><p>${m.desc}</p><strong>選出會參與任務的角色（可複選）：</strong><div class="options" style="margin-top:10px">${m.choices.map(c=>`<button class="choice" data-m="${i}" data-c="${c}">${c}</button>`).join("")}</div><div class="feedback" id="mf${i}"></div></div>`).join("")+`<button class="primary" id="checkMissions">出動救援隊！</button><button class="secondary" id="resetMissions">重新選擇</button>`;
+document.querySelectorAll("[data-m]").forEach(b=>b.addEventListener("click",()=>{const i=b.dataset.m,c=b.dataset.c;selected[i]??=new Set();if(selected[i].has(c)){selected[i].delete(c);b.classList.remove("selected")}else{selected[i].add(c);b.classList.add("selected")}}));
+document.getElementById("checkMissions").addEventListener("click",()=>{
+ let total=0;missions.forEach((m,i)=>{const s=selected[i]||new Set(),ok=m.correct.every(x=>s.has(x))&&[...s].every(x=>m.correct.includes(x));const f=document.getElementById("mf"+i);if(ok){total++;f.className="feedback correct";f.textContent="✓ 任務成功！"+m.why;}else{f.className="feedback wrong";f.textContent="✗ 再想一想！提示："+m.why;}});
+ document.getElementById("missionResult").textContent=`救援成功 ${total} / 3 關！${total===3?"人體團隊合作無間！": "再試一次，讓所有隊員都發揮功能！"}`;
+ if(total===3)addPoints("missions",150);
+});
+document.getElementById("resetMissions").addEventListener("click",()=>{Object.keys(selected).forEach(k=>delete selected[k]);document.querySelectorAll("[data-m]").forEach(b=>b.classList.remove("selected"));missions.forEach((m,i)=>{const f=document.getElementById("mf"+i);f.textContent="";});document.getElementById("missionResult").textContent="";});
+</script>
+</body>
+</html>
